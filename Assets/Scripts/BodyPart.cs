@@ -7,7 +7,6 @@ public class BodyPart : MonoBehaviour
 {
     Vector2 deltaPosition;
     public BodyPart following = null;
-    private bool isTail = false;
     private SpriteRenderer spriteRenderer = null;
     const int PARTREMEMBERED = 10;
     public Vector3[] previousPositions = new Vector3[PARTREMEMBERED];
@@ -99,13 +98,11 @@ public class BodyPart : MonoBehaviour
 
     public void TurnIntoTail()
     {
-        isTail = true;
         spriteRenderer.sprite = GameController.instance.tailSprite;
     }
 
     public void TurnIntoBodyPart()
     {
-        isTail = false;
         spriteRenderer.sprite = GameController.instance.bodySprite;
     }
 

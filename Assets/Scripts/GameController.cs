@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
@@ -19,6 +20,9 @@ public class GameController : MonoBehaviour
     List<Egg> eggs = new List<Egg>();
     int level = 0;
     int noOfEggsForNextLevel = 0;
+    public int score = 0, highscore = 0;
+    public Text scoreText = null, highscoreText = null;
+    public Text gameOverText = null, tapToPlayText = null;
 
     // Start is called before the first frame update
     void Start()
@@ -48,6 +52,11 @@ public class GameController : MonoBehaviour
 
     void StartGameplay()
     {
+        score = 0;
+        scoreText.text = "Score: " + score;
+        highscoreText.text = "Highcore: " + highscore;
+        gameOverText.gameObject.SetActive(false);
+        tapToPlayText.gameObject.SetActive(false);
         waitingToPlay = false;
         isAlive = true;
         KillAllEggs();
@@ -68,14 +77,20 @@ public class GameController : MonoBehaviour
     {
         isAlive = false;
         waitingToPlay = true;
+        gameOverText.gameObject.SetActive(true);
+        tapToPlayText.gameObject.SetActive(true);
     }
 
     public void EggEaten(Egg egg)
     {
+        score++;
         noOfEggsForNextLevel--;
         if (noOfEggsForNextLevel == 0)
+        {
+            score += 10;
             LevelUp();
-        else if(noOfEggsForNextLevel == 1) // last egg
+        }
+        else if (noOfEggsForNextLevel == 1) // last egg
         {
             CreateEgg(true);
         }
@@ -83,6 +98,13 @@ public class GameController : MonoBehaviour
         {
             CreateEgg();
         }
+
+        if (score > highscore)
+        {
+            highscore = score;
+            highscoreText.text = "Highcore: " + highscore;
+        }
+        scoreText.text = "Score: " + score;
 
         eggs.Remove(egg);
         Destroy(egg.gameObject);

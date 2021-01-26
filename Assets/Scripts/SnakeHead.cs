@@ -11,6 +11,8 @@ public class SnakeHead : BodyPart
     float addTimer = TIMETOADDBODYPART;
     public int partsToAdd = 0;
     List<BodyPart> bodyParts = new List<BodyPart>();
+    public AudioSource[] gulpSounds = new AudioSource[3];
+    public AudioSource dieSound = null;
 
     // Start is called before the first frame update
     void Start()
@@ -52,6 +54,8 @@ public class SnakeHead : BodyPart
 
         gameObject.transform.localEulerAngles = new Vector3(0, 0, 0);
         gameObject.transform.position = new Vector3(0,0,0);
+
+        ResetMemory();
 
         partsToAdd = 5;
         addTimer = TIMETOADDBODYPART;
@@ -130,10 +134,13 @@ public class SnakeHead : BodyPart
         if (egg)
         {
             EatEgg(egg);
+            int rand = UnityEngine.Random.Range(0, 3);
+            gulpSounds[rand].Play();
         }
         else
         {
             GameController.instance.GameOver();
+            dieSound.Play();
         }
     }
 

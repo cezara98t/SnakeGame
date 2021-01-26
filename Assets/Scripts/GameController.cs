@@ -53,6 +53,7 @@ public class GameController : MonoBehaviour
     void StartGameplay()
     {
         score = 0;
+        level = 0;
         scoreText.text = "Score: " + score;
         highscoreText.text = "Highcore: " + highscore;
         gameOverText.gameObject.SetActive(false);

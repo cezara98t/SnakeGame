@@ -10,6 +10,7 @@ public class SnakeHead : BodyPart
     const float TIMETOADDBODYPART = 0.1f;
     float addTimer = TIMETOADDBODYPART;
     public int partsToAdd = 0;
+    List<BodyPart> bodyParts = new List<BodyPart>();
 
     // Start is called before the first frame update
     void Start()
@@ -20,6 +21,8 @@ public class SnakeHead : BodyPart
     // Update is called once per frame
     override public void Update()
     {
+        if (!GameController.instance.isAlive) return;
+
         base.Update();
         SetMovement(movement * Time.deltaTime);
         UpdateDirection();
@@ -38,10 +41,21 @@ public class SnakeHead : BodyPart
 
     public void ResetSnake()
     {
+        foreach(BodyPart part in bodyParts)
+        {
+            Destroy(part.gameObject);
+        }
+        bodyParts.Clear();
+
         tail = null;
         MoveUp();
+
+        gameObject.transform.localEulerAngles = new Vector3(0, 0, 0);
+        gameObject.transform.position = new Vector3(0,0,0);
+
         partsToAdd = 5;
         addTimer = TIMETOADDBODYPART;
+
     }
 
     void AddBodyPart()
@@ -50,11 +64,13 @@ public class SnakeHead : BodyPart
         {
             Vector3 newPosition = tail.transform.position;
             newPosition.z = newPosition.z + 0.01f;
-            BodyPart newPart = Instantiate(GameController.instance.bodyPrefab, newPosition, Quaternion.identity);
+            BodyPart newPart = Instantiate(GameController.instance.bodyPrefab, newPosition, tail.transform.rotation);
             newPart.following = tail;
             newPart.TurnIntoTail();
             tail.TurnIntoBodyPart();
             tail = newPart;
+
+            bodyParts.Add(newPart);
         }
         else // only a head
         {
@@ -64,6 +80,8 @@ public class SnakeHead : BodyPart
             newPart.following = this;
             tail = newPart;
             newPart.TurnIntoTail();
+
+            bodyParts.Add(newPart);
         }
     }
 
@@ -104,5 +122,25 @@ public class SnakeHead : BodyPart
     void MoveRight()
     {
         movement = Vector2.right * GameController.instance.snakeSpeed;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        Egg egg = collision.GetComponent<Egg>();
+        if (egg)
+        {
+            EatEgg(egg);
+        }
+        else
+        {
+            GameController.instance.GameOver();
+        }
+    }
+
+    private void EatEgg(Egg egg)
+    {
+        partsToAdd = 5;
+        addTimer = 0;
+        GameController.instance.EggEaten(egg);
     }
 }

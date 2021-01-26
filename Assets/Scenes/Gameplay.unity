@@ -319,6 +319,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   snakeSpeed: 1
+  bodyPrefab: {fileID: 6864429226139127050, guid: f5cf965b4e747ae40b918f02538dee92, type: 3}
+  tailSprite: {fileID: 21300000, guid: 4cfcfe9a9ce20c447ad567ef5929025d, type: 3}
+  bodySprite: {fileID: 21300000, guid: 6eb6472f3f62c8740bca6efe9e5c745a, type: 3}
+  snakeHead: {fileID: 1520842880}
 --- !u!4 &641072296
 Transform:
   m_ObjectHideFlags: 0
@@ -375,6 +379,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73a5934df6927994189203e563ea3e97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  following: {fileID: 0}
+  previousPositions:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  setIndex: 0
+  getIndex: -9
+  partsToAdd: 0
 --- !u!212 &1520842881
 SpriteRenderer:
   m_ObjectHideFlags: 0
